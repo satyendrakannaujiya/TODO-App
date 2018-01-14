@@ -45,7 +45,8 @@ export class UpdatePage {
         this.updateobj.id,
         this.updateobj.task,
         this.updateobj.priority,
-        this.updateobj.status
+        this.updateobj.status,
+        this.updateobj.isdone
       )
       .then(data => {
         this.showalert();

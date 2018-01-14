@@ -12,7 +12,7 @@ export class IdgeneraterProvider {
   private static IDDB: string = "id";
   constructor(public storage: Storage) {
     console.log("Hello IdgeneraterProvider Provider");
-    //this.storage.set(IdgeneraterProvider.IDDB, 1);
+    this.storage.set(IdgeneraterProvider.IDDB, 1);
   }
 
   getnewId() {

@@ -50,14 +50,16 @@ export class TaskProvider {
           id: data[i].id,
           task: data[i].task,
           priority: data[i].priority,
-          status: data[i].status
+          status: data[i].status,
+          isdone: data[i].isdone
         });
       }
       this.task.push({
         id: item.id,
         task: item.task,
         priority: item.priority,
-        status: item.status
+        status: item.status,
+        isdone: item.isdone
       });
 
       var ss = this.storage.set(TaskProvider.TASKDB, this.task);
@@ -86,7 +88,8 @@ export class TaskProvider {
             id: data[i].id,
             task: data[i].task,
             priority: data[i].priority,
-            status: data[i].status
+            status: data[i].status,
+            isdone: data[i].isdone
           });
           //    console.log(k.length);
         }
@@ -102,7 +105,8 @@ export class TaskProvider {
     Id: number,
     Task: string,
     Priority: string,
-    Status: string
+    Status: string,
+    isDone: boolean
   ): Promise<any> {
     this.task.length = 0;
     let obj = this.storage.get(TaskProvider.TASKDB);
@@ -115,14 +119,16 @@ export class TaskProvider {
             id: Id,
             task: Task,
             priority: Priority,
-            status: Status
+            status: Status,
+            isdone: isDone
           });
         } else {
           this.task.push({
             id: data[i].id,
             task: data[i].task,
             priority: data[i].priority,
-            status: data[i].status
+            status: data[i].status,
+            isdone: data[i].isdone
           });
         }
       }
@@ -144,7 +150,8 @@ export class TaskProvider {
             id: data[i].id,
             task: data[i].task,
             priority: data[i].priority,
-            status: data[i].status
+            status: data[i].status,
+            isdone: data[i].isdone
           });
         } else {
           //console.log("pushing");
@@ -152,12 +159,50 @@ export class TaskProvider {
             id: data[i].id,
             task: data[i].task,
             priority: data[i].priority,
-            status: data[i].status
+            status: data[i].status,
+            isdone: data[i].isdone
           });
           // console.log(k.length);
         }
       }
       //console.log("length after deletion " + this.task.length);
+      var ss = this.storage.set(TaskProvider.TASKDB, this.task);
+      return ss;
+    });
+  }
+  ToggleConnectivity(id) {
+    this.task.length = 0;
+    let obj = this.storage.get(TaskProvider.TASKDB);
+
+    return obj.then(data => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id == id) {
+          var temp: boolean;
+          if (data[i].isdone == true) {
+            temp = false;
+          } else {
+            temp = true;
+          }
+          this.task.push({
+            id: data[i].id,
+            task: data[i].task,
+            priority: data[i].priority,
+            status: data[i].status,
+            isdone: temp
+          });
+        } else {
+          console.log("pushing");
+          this.task.push({
+            id: data[i].id,
+            task: data[i].task,
+            priority: data[i].priority,
+            status: data[i].status,
+            isdone: data[i].isdone
+          });
+          //    console.log(k.length);
+        }
+      }
+      console.log("length after deletion " + this.task.length);
       var ss = this.storage.set(TaskProvider.TASKDB, this.task);
       return ss;
     });

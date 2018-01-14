@@ -21,11 +21,18 @@
     <ion-item-sliding *ngFor="let t of tasks">
 
       <ion-item>
-        <ion-toggle checked="{{(t.status == 'pending')?false:true}}" (click)="doneTask(t.id,t.status)"></ion-toggle>
-        <ion-label>
-          <h2 [ngClass]="t.status"> {{t.task}}</h2>
-          <p [ngClass]="t.priority">{{t.priority}}</p>
-        </ion-label>
+        <div class="container">
+          <div class="contanct-details">
+            <p [ngClass]="t.status">{{t.task}}</p>
+            <p [ngClass]="t.priority">{{t.priority}}</p>
+          </div>
+          <button ion-button right clear icon-only color="secondary" (click)="toggleConnectivity(t.id)">
+            <img *ngIf="t.isdone" src="assets/imgs/link.svg" alt="">
+            <img *ngIf="!t.isdone" class="checked" src="assets/imgs/checked.svg" alt="">
+          </button>
+        </div>
+
+
       </ion-item>
 
       <ion-item-options side="right">

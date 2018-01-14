@@ -15,7 +15,8 @@ import { IDGenerator } from "../../providers/IDGenerator";
 })
 export class HomePage {
   tasks: TASKMODEL[] = [];
-
+  name = "hammer";
+  colors = "primary";
   constructor(
     public navCtrl: NavController,
     private taskProvider: TaskProvider,
@@ -32,14 +33,20 @@ export class HomePage {
   showTask() {
     this.taskProvider.getTask().then(data => {
       this.tasks = [];
-      if (data.length > 0) {
-        for (let i = 0; i < data.length; i++) {
-          this.tasks.push({
-            id: data[i].id,
-            task: data[i].task,
-            priority: data[i].priority,
-            status: data[i].status
-          });
+      if (data == null) {
+        console.log(typeof data);
+        console.log(data);
+      } else {
+        if (data.length > 0) {
+          for (let i = 0; i < data.length; i++) {
+            this.tasks.push({
+              id: data[i].id,
+              task: data[i].task,
+              priority: data[i].priority,
+              status: data[i].status,
+              isdone: data[i].isdone
+            });
+          }
         }
       }
     });
@@ -75,22 +82,6 @@ export class HomePage {
             obj.then(data => {
               this.showalert();
             });
-            //this.showalert();
-            // var temp: TASKMODEL;
-            // let obj = this.taskProvider.getTask();
-            // obj.then(data => {
-            //   for (let i = 0; i < data.length; i++) {
-            //     if (data[i].id == id) {
-            //       temp = data[i];
-            //       break;
-            //     }
-            //   }
-
-            //   this.tasks = data.filter(function(tt) {
-            //     return tt.id != id;
-            //   });
-            //   this.showalert();
-            // });
           }
         },
         {
@@ -142,5 +133,44 @@ export class HomePage {
       ]
     });
     alert.present();
+  }
+
+  toggle(el) {
+    if (el.className != "notDone") {
+      el.src = "assets/imgs/checked.svg";
+      el.className = "Done";
+    } else if (el.className == "Done") {
+      el.src = "assets/imgs/update-arrow.svg";
+      el.className = "notDone";
+    }
+
+    return false;
+  }
+  toogleicon() {
+    if (this.name == "hammer") {
+      this.name = "checkmark-circle";
+      this.colors = "secondary";
+    } else {
+      this.name = "hammer";
+      this.colors = "primary";
+    }
+  }
+  toggleConnectivity(id) {
+    this.taskProvider.ToggleConnectivity(id).then(data => {
+      let alert = this.alertCtrl.create({
+        title: "Sucess",
+        subTitle: "Task status updated",
+        buttons: [
+          {
+            text: "OK",
+            handler: () => {
+              this.showTask();
+            }
+          }
+        ]
+      });
+      alert.present();
+      //    this.showTask();
+    });
   }
 }

@@ -39,7 +39,11 @@ export class AddPage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad AddPage");
   }
+    savetask1(){
+      console.log("new method");
+    }
   SaveTask() {
+    console.log(this.task);
     if (this.task === undefined) {
       this.showalert();
     } else {
@@ -51,7 +55,8 @@ export class AddPage {
           id: data,
           task: this.task,
           priority: this.priority,
-          status: "pending"
+          status: "pending",
+          isdone:true
         };
         console.log("addes item id is " + newItem1.id);
         this.idgenerater.setId(data + 1).then(data => {
